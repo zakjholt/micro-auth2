@@ -6,9 +6,13 @@ module.exports = config => handler => async (req, res) => {
   assert(config.introspectionUrl, 'Must provide token introspection URL')
   assert(config.clientId, 'Must provide clientId')
   assert(config.clientSecret, 'Must provide clientSecret')
-
   const { clientId, clientSecret, introspectionUrl } = config
-  const accessToken = req.headers.Authorization.replace('Bearer ', '')
+
+  if (!req.headers.authorization) {
+    throw createError(401, 'Must provide access token')
+  }
+
+  const accessToken = req.headers.authorization.replace('Bearer ', '')
 
   if (!accessToken || !accessToken.length) {
     throw createError(401, 'Must provide access token')
