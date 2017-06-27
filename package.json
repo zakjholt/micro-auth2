@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "micro-boom": "^1.1.0"
+    "micro": "^7.3.3"
   },
   "homepage": "https://github.com/zakjholt/micro-auth2#readme",
   "devDependencies": {},

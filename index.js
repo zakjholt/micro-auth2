@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { createError } = require('micro-boom')
+const { sendError } = require('micro')
 const assert = require('assert')
 
 module.exports = config => handler => async (req, res) => {
@@ -9,13 +9,19 @@ module.exports = config => handler => async (req, res) => {
   const { clientId, clientSecret, introspectionUrl } = config
 
   if (!req.headers.authorization) {
-    throw createError(401, 'Must provide access token')
+    return sendError(req, res, {
+      statusCode: 401,
+      message: 'Must provide access token'
+    })
   }
 
   const accessToken = req.headers.authorization.replace('Bearer ', '')
 
   if (!accessToken || !accessToken.length) {
-    throw createError(401, 'Must provide access token')
+    return sendError(req, res, {
+      statusCode: 401,
+      message: 'Must provide access token'
+    })
   }
 
   const { data: { active, sub: userId, scope } } = await axios({
@@ -31,7 +37,10 @@ module.exports = config => handler => async (req, res) => {
   })
 
   if (!active) {
-    throw createError(403, 'Access token has expired or been revoked')
+    return sendError(req, res, {
+      statusCode: 403,
+      message: 'Access token has expired or been revoked'
+    })
   }
 
   const newReq = Object.assign({}, req, { userData: { userId, scope } })
