@@ -1,5 +1,6 @@
 const axios = require('axios')
 const { createError } = require('micro-boom')
+const assert = require('assert')
 
 module.exports = config => handler => async (req, res) => {
   assert(config.introspectionUrl, 'Must provide token introspection URL')
