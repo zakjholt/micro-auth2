@@ -1,5 +1,5 @@
 {
-  "name": "@octane/micro-auth",
+  "name": "micro-auth2",
   "version": "1.0.0",
   "description": "authentication middleware for octane microservices",
   "main": "index.js",

@@ -2,7 +2,11 @@ const axios = require('axios')
 const { createError } = require('micro-boom')
 
 module.exports = config => handler => async (req, res) => {
-  assert(config.issuer, 'Must provide OIDC provider url')
+  assert(config.introspectionUrl, 'Must provide token introspection URL')
+  assert(config.clientId, 'Must provide clientId')
+  assert(config.clientSecret, 'Must provide clientSecret')
+
+  const { clientId, clientSecret, introspectionUrl } = config
   const accessToken = req.headers.Authorization.replace('Bearer ', '')
 
   if (!accessToken || !accessToken.length) {
@@ -11,10 +15,10 @@ module.exports = config => handler => async (req, res) => {
 
   const { data: { active, sub: userId, scope } } = await axios({
     method: 'post',
-    url: `${config.issuer}/token/introspection`,
+    url: introspectionUrl,
     auth: {
-      username: 'ui', // TODO, make client for this service
-      password: '45DhKaGdB4MD6a6zrA8c'
+      username: clientId,
+      password: clientSecret
     },
     data: {
       token: accessToken
