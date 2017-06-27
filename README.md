@@ -1,4 +1,4 @@
-<p align="center"><img src='./lock.png'></p>
+<p align="center"><img src='https://raw.githubusercontent.com/Zakjholt/micro-auth2/master/lock.png'></p>
 <h2 align="center">micro-auth2</h2>
 
 This is the oauth 2.0 authentication middleware for Octane zeit micro-services. It checks for accessTokens and checks for the token's status and scope, and also makes the user's ID available inside of a req.userData object.
