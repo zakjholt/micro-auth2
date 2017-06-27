@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/securiport/octane-auth-middleware.git"
+    "url": "git+ssh://git@github.com/Zakjholt/micro-auth2.git"
   },
   "author": "Zak Holt <zholt@securiport.com>",
   "license": "MIT",
@@ -16,10 +16,7 @@
     "axios": "^0.16.2",
     "micro-boom": "^1.1.0"
   },
-  "bugs": {
-    "url": "https://github.com/securiport/octane-auth-middleware/issues"
-  },
-  "homepage": "https://github.com/securiport/octane-auth-middleware#readme",
+  "homepage": "https://github.com/zakjholt/micro-auth2#readme",
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
