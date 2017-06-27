@@ -1,0 +1,27 @@
+{
+  "name": "@octane/micro-auth",
+  "version": "1.0.0",
+  "description": "authentication middleware for octane microservices",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/securiport/octane-auth-middleware.git"
+  },
+  "author": "Zak Holt <zholt@securiport.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "micro": "^7.1.0"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "micro-boom": "^1.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/securiport/octane-auth-middleware/issues"
+  },
+  "homepage": "https://github.com/securiport/octane-auth-middleware#readme",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
