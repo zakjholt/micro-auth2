@@ -2,28 +2,7 @@ const axios = require('axios')
 const { sendError } = require('micro')
 const assert = require('assert')
 
-module.exports = exports = config => handler => async (req, res) => {
-  assert(config.introspectionUrl, 'Must provide token introspection URL')
-  assert(config.clientId, 'Must provide clientId')
-  assert(config.clientSecret, 'Must provide clientSecret')
-  const { clientId, clientSecret, introspectionUrl } = config
-
-  if (!req.headers.authorization) {
-    return sendError(req, res, {
-      statusCode: 401,
-      message: 'Must provide access token'
-    })
-  }
-
-  const accessToken = req.headers.authorization.replace('Bearer ', '')
-
-  if (!accessToken || !accessToken.length) {
-    return sendError(req, res, {
-      statusCode: 401,
-      message: 'Must provide access token'
-    })
-  }
-
+const introspectToken = async ({ introspectionUrl, clientId, clientSecret, accessToken }) => {
   const { data: { active, sub: userId, scope } } = await axios({
     method: 'post',
     url: introspectionUrl,
@@ -43,7 +22,27 @@ module.exports = exports = config => handler => async (req, res) => {
     })
   }
 
-  const newReq = Object.assign({}, req, { userData: { userId, scope } })
+  return { userId, scope }
+}
 
-  return handler(newReq, res)
+module.exports = exports = (config) => (fn) => {
+  const { introspectionUrl, clientId, clientSecret } = config
+
+  if (!introspectionUrl || !clientId || !clientSecret) {
+    throw Error('Must provide config with introspectionUrl, clientId, and clientSecret properties')
+  }
+
+  return (req, res) => {
+    const bearerToken = req.headers.authorization
+
+    if (!bearerToken) {
+      return sendError(req, res, { statusCode: 401, message: 'missing Authorization header' })
+    }
+
+    const { userId, scope } = await introspectToken({ clientId, clientSecret, introspectionUrl, accessToken })
+
+    const newReq = Object.assign({}, req, { userData: { userId, scope } })
+
+    return fn(req, res)
+  }
 }

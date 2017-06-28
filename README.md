@@ -40,8 +40,11 @@ module.exports = compose(
   visualize,
   cookieParse
 )(async (req, res) => {
+  const { userId, scope } = req.userData
   const responseMessage = {
-    message: 'Great! You have been authenticated!'
+    message: 'Great! You have been authenticated!',
+    userId,
+    scope
   }
 
   send(res, 200, responseMessage)
