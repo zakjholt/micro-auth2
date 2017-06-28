@@ -32,7 +32,7 @@ module.exports = exports = (config) => (fn) => {
     throw Error('Must provide config with introspectionUrl, clientId, and clientSecret properties')
   }
 
-  return (req, res) => {
+  return async (req, res) => {
     const bearerToken = req.headers.authorization
 
     if (!bearerToken) {
