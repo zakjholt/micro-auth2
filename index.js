@@ -1,8 +1,12 @@
+const querystring = require('querystring')
 const axios = require('axios')
 const { sendError } = require('micro')
 const assert = require('assert')
 
 const introspectToken = async ({ introspectionUrl, clientId, clientSecret, accessToken }) => {
+
+  console.log(introspectionUrl, clientId, clientSecret, accessToken)
+
   const { data: { active, sub: userId, scope } } = await axios({
     method: 'post',
     url: introspectionUrl,
@@ -10,22 +14,19 @@ const introspectToken = async ({ introspectionUrl, clientId, clientSecret, acces
       username: clientId,
       password: clientSecret
     },
-    data: {
+    data: querystring.stringify({
       token: accessToken
-    }
+    })
   })
 
   if (!active) {
-    return sendError(req, res, {
-      statusCode: 403,
-      message: 'Access token has expired or been revoked'
-    })
+    throw Error('Access token has expired or been revoked')
   }
 
   return { userId, scope }
 }
 
-module.exports = exports = (config) => (fn) => {
+const auth = exports = (config) => (fn) => {
   const { introspectionUrl, clientId, clientSecret } = config
 
   if (!introspectionUrl || !clientId || !clientSecret) {
@@ -41,10 +42,14 @@ module.exports = exports = (config) => (fn) => {
 
     const accessToken = bearerToken.replace('Bearer ', '')
 
-    const { userId, scope } = await introspectToken({ clientId, clientSecret, introspectionUrl, accessToken })
+    try {
+      const userData = await introspectToken({ clientId, clientSecret, introspectionUrl, accessToken })
 
-    const newReq = Object.assign({}, req, { userData: { userId, scope } })
+      const newReq = Object.assign({}, req, { userData })
 
-    return fn(req, res)
+      return fn(newReq, res)
+    } catch (error) {
+      return sendError(req, res, { statusCode: 403, status: 403, message: error })
+    }
   }
 }
