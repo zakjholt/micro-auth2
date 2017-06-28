@@ -1,6 +1,6 @@
 {
   "name": "micro-auth2",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "authentication middleware for octane microservices",
   "main": "index.js",
   "repository": {
