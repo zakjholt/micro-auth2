@@ -39,6 +39,8 @@ module.exports = exports = (config) => (fn) => {
       return sendError(req, res, { statusCode: 401, message: 'missing Authorization header' })
     }
 
+    const accessToken = bearerToken.replace('Bearer ', '')
+
     const { userId, scope } = await introspectToken({ clientId, clientSecret, introspectionUrl, accessToken })
 
     const newReq = Object.assign({}, req, { userData: { userId, scope } })
