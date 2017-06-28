@@ -41,11 +41,9 @@ module.exports = exports = (config) => (fn) => {
     const accessToken = bearerToken.replace('Bearer ', '')
 
     try {
-      const userData = await introspectToken({ clientId, clientSecret, introspectionUrl, accessToken })
+      req.userData = await introspectToken({ clientId, clientSecret, introspectionUrl, accessToken })
 
-      const newReq = Object.assign({}, req, { userData })
-
-      return fn(newReq, res)
+      return fn(req, res)
     } catch (error) {
       return sendError(req, res, { statusCode: 403, status: 403, message: error })
     }
