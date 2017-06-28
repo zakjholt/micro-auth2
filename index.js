@@ -5,8 +5,6 @@ const assert = require('assert')
 
 const introspectToken = async ({ introspectionUrl, clientId, clientSecret, accessToken }) => {
 
-  console.log(introspectionUrl, clientId, clientSecret, accessToken)
-
   const { data: { active, sub: userId, scope } } = await axios({
     method: 'post',
     url: introspectionUrl,
