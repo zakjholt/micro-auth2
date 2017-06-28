@@ -26,7 +26,7 @@ const introspectToken = async ({ introspectionUrl, clientId, clientSecret, acces
   return { userId, scope }
 }
 
-const auth = exports = (config) => (fn) => {
+module.exports = exports = (config) => (fn) => {
   const { introspectionUrl, clientId, clientSecret } = config
 
   if (!introspectionUrl || !clientId || !clientSecret) {
