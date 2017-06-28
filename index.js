@@ -2,7 +2,7 @@ const axios = require('axios')
 const { sendError } = require('micro')
 const assert = require('assert')
 
-module.exports = config => handler => async (req, res) => {
+module.exports = exports = config => handler => async (req, res) => {
   assert(config.introspectionUrl, 'Must provide token introspection URL')
   assert(config.clientId, 'Must provide clientId')
   assert(config.clientSecret, 'Must provide clientSecret')
