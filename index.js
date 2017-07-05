@@ -7,9 +7,10 @@ const introspectToken = async ({
   introspectionUrl,
   clientId,
   clientSecret,
-  accessToken
+  accessToken,
+  debug
 }) => {
-  const { data: { active, sub: userId, scope } } = await axios({
+  const { data } = await axios({
     method: 'post',
     url: introspectionUrl,
     auth: {
@@ -20,6 +21,12 @@ const introspectToken = async ({
       token: accessToken
     })
   })
+
+  if (debug) {
+    console.log(data)
+  }
+
+  const { active, scope, sub: userId } = data
 
   if (!active) {
     throw Error('Access token has expired or been revoked')
